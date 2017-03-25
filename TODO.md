@@ -3,6 +3,7 @@ Node:
 * Need Slack POST webhook logic
 * Need OAuth refresh to pass to Python
 * Need basic splash page
+* Need error handling
 * Need to clean up controller functions (OOD!!!)
 * Add comments you....bad person
 * Spawn Python to link to broadcast
