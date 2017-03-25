@@ -57,6 +57,25 @@ module.exports = class Auth {
             });
     }
 
+    /**
+     * Checks if incoming Webhook is Valid
+     * Otherwise returns 403
+     */
+    static isValidWebhook() {
+        return compose()
+        // Validate jwt
+            .use(function(req, res, next) {
+                // allow access_token to be passed through query parameter as well
+                if(req.query && req.query.hasOwnProperty('access_token') && req.query['access_token'] === '6i4m8s3o2v3e9r7y9s8a5d3i5n6s2i9d5e1413') {
+                    return next()
+                } else if (req.body.token === 'x4ba2Axog40RZ2DmKCLVPpZ2')  {
+                    return next()
+                } else {
+                    res.status(403).send('ACCESS DENIED!!');
+                }
+            });
+    }
+
 };
 
 
