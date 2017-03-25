@@ -11,6 +11,6 @@ module.exports = class KickAssRoutes {
             .get(KickAssController.kickAssTest);
         router
             .route('/api/slash/torrents')
-            .post(auth.isValidWebhook(), Webhooks.slackRequest)
+            .post(auth.isValidWebhook(), Webhooks.slashCmd)
     }
 };
