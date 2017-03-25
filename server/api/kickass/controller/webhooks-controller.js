@@ -29,7 +29,7 @@ function listTorrents(args, res) {
 
 // Starts a torrent using a magnet link
 function startTorrent(args, res) {
-    request.get(URL + 'api/kickass/start/' + args[1], function (err, response, body) {
+    request.post(URL + 'api/kickass/start/' + args[1], function (err, response, body) {
         if (err) {
             return res.status(500).send('Uhhh oh... something went wrong. You may need to try a different link.')
         }
@@ -42,7 +42,7 @@ function startTorrent(args, res) {
 
 // Stops a torrent if it exists
 function stopTorrent(args, res) {
-    request.get(URL + 'api/kickass/stop' + args[1], function (err, response, body) {
+    request.post(URL + 'api/kickass/stop' + args[1], function (err, response, body) {
         if (err) {
             return res.status(500).send('Either the ID you used does not exist, or my code is broken somewhere...')
         }

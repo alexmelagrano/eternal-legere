@@ -10,6 +10,12 @@ module.exports = class KickAssRoutes {
             .route('/api/kickass')
             .get(KickAssController.kickAssTest);
         router
+            .route('/api/kickass/stop/:id')
+            .post(KickAssController.kickAssTest);
+        router
+            .route('/api/kickass/start/:link')
+            .post(KickAssController.kickAssTest);
+        router
             .route('/api/slash/torrents')
             .post(auth.isValidWebhook(), Webhooks.slashCmd)
     }
