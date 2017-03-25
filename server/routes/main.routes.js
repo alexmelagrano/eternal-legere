@@ -1,21 +1,15 @@
 "use strict";
 
-const RFRoutes = require('../api/rf/routes/rf-routes');
+const KickAssRoutes = require('../api/kickass/routes/kickass-routes');
 const path = require('path');
 
 module.exports = class Routes {
     static init(app, router) {
-        RFRoutes.init(router);
+        KickAssRoutes.init(router);
         router
-            .route('/')
+            .route('/fdafqgaf')
             .get(function (req, res) {
-                if (req.headers.host.includes('spirited-away.')) {
-                    res.sendFile(path.join(__dirname, '../../client', 'subdomain1', 'index.html'));
-                } else if (req.headers.host.includes('api.')) {
-		    res.sendFile(path.join(__dirname, '../../client', 'api', 'index.html')); 
-		} else {
-                    res.sendFile(path.join(__dirname, '../../client', 'main', 'index.html'));
-                }
+		        res.sendFile(path.join(__dirname, '../../client', 'api', 'index.html'));
             });
         // 404 Handling error
         router
