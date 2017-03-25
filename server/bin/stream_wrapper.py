@@ -20,7 +20,7 @@ from oauth2client.tools import argparser, run_flow
 ## Global vars
 STREAM_TITLE = 'test_shiz_nit'
 STREAM_URL = 'https://1drv.ms/v/s!AnLNeqMkjLFdgVYR6uP8Np6xOGVG'
-ACCESS_TOKEN = 'ya29.GlwZBJs3mDEKB_gFM0iLF32tl4oCdY3ETZHRYnWlpIXG7_ClkPC1TmzI20loGqYUb75KmwvgMThtR3vlDZsD_j93c8LicOiCMB536vwCP_ehTwo9YacprGYqkZPOag'
+ACCESS_TOKEN = 'ya29.GlsZBBnI6MHfvjziriZJ_cq5CkkSFV-KnGH2QHN5W3F8lOTrLTMw4mp9LkXPvhUu5Piv1h5G5XLCdvGhBnn01_PuIA6vV5xUXr2hGK-HTqwCx0h9Aai9TAmyoTp0'
 
 ## Parses the options
 options = {
@@ -47,7 +47,7 @@ def insert_stream():
     'cdn': {
       'format': '720p',
       'ingestionType': 'rtmp',
-      'ingestionAddress': { 'ingestionAddress': options['streamUrl'] }
+      'ingestionInfo': { 'ingestionAddress': options['streamUrl'] }
     }
   }
   resp, content = h.request("https://www.googleapis.com/youtube/v3/liveStreams?part=snippet,cdn", 
@@ -88,11 +88,13 @@ def bind_broadcast(stream_id, broadcast_id):
   h = httplib2.Http()
   headers = {'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + options['accessToken']}
-
+  body = {
+    'id': broadcast_id,
+    'streamId': stream_id
+  }
   resp, content = h.request("https://www.googleapis.com/youtube/v3/liveBroadcasts/bind?part=id,contentDetails", 
                             method="POST",
-                            id=broadcast_id,
-                            streamId=stream_id,
+                            body=json.dumps(body),
                             headers=headers)
   
   print "Made the POST for the bind: response of " + str(resp.status)
