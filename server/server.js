@@ -4,7 +4,6 @@ const HTTP_PORT = 80;
 
 const fs = require('fs');
 const os = require('os');
-const https = require('https');
 const http = require('http');
 const express = require('express');
 const RoutesConfig = require('./config/routes.conf');
