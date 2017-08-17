@@ -1,7 +1,8 @@
 import requests
 import time
 from classes.FFMPEG import FFMPEG
-from server.config.private YT_CHANNEL
+from server.config.private import YT_CHANNEL
+from server.config.private import PEERFLIX_SERVER
 
 
 # Function for a pre-defined test to start torrent to youtube
@@ -12,7 +13,7 @@ def kickass_test():
             "Content-Type": "application/json;charset=UTF-8",
             "Accept": "*/*"
         },
-        "url": 'http://localhost:9000/torrents',
+        "url": '{0}/torrents'.format(PEERFLIX_SERVER),
         "body": '{"link": "magnet:?xt=urn:btih:4b642d022980e5ebaa7cf4b6e1cc93769921cb42&dn=The+Wolf+of+Wall+Street+%282013%29+1080p+BrRip+x264+-+YIFY&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fzer0day.ch%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969"}'
     }
     # Send request to peerflix-server
@@ -22,9 +23,9 @@ def kickass_test():
     time.sleep(10)
 
     # Get the torrent streaming link
-    torrent_link = get_max_file(torrent_files('http://localhost:9000', torrent_hash))['link']
+    torrent_link = get_max_file(torrent_files(PEERFLIX_SERVER, torrent_hash))['link']
 
-    success = FFMPEG().start_stream('http://localhost:9000', torrent_link)
+    success = FFMPEG().start_stream(PEERFLIX_SERVER, torrent_link)
     if success:
         return YT_CHANNEL
     else:
@@ -43,7 +44,7 @@ def start_torrent_stream(magnet_link):
             "Content-Type": "application/json;charset=UTF-8",
             "Accept": "*/*"
         },
-        "url": 'http://localhost:9000/torrents',
+        "url": '{0}/torrents'.format(PEERFLIX_SERVER),
         "body": '{"link": "{0}"}'.format(magnet_link)
     }
     # Send request to peerflix-server
@@ -53,9 +54,9 @@ def start_torrent_stream(magnet_link):
     time.sleep(10)
 
     # Get the torrent streaming link
-    torrent_link = get_max_file(torrent_files('http://localhost:9000', torrent_hash))['link']
+    torrent_link = get_max_file(torrent_files(PEERFLIX_SERVER, torrent_hash))['link']
 
-    success = FFMPEG().start_stream('http://localhost:9000', torrent_link)
+    success = FFMPEG().start_stream(PEERFLIX_SERVER, torrent_link)
     if success:
         return YT_CHANNEL
     else:
@@ -81,7 +82,7 @@ def stop_torrent_stream():
             "Content-Type": "application/json;charset=UTF-8",
             "Accept": "*/*"
         },
-        "url": 'http://localhost:9000/torrents'
+        "url": '{0}/torrents'.format(PEERFLIX_SERVER)
     }
 
     success = FFMPEG().stop_stream()
