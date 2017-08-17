@@ -6,7 +6,7 @@ kickass_api = Blueprint('kickass_api', __name__)
 
 
 # Test route that has pre-filled parameters
-@kickass_api.route('/api/kickass/test', methods=['GET'])
+#@kickass_api.route('/api/kickass/test', methods=['GET'])
 def kickass_test():
     return jsonify(kc.kickass_test())
 
@@ -28,7 +28,7 @@ def slack_hook():
     if len(cmds) > 0 and cmds[0] == 'stop':
         return jsonify(kc.stop_torrent_stream())
     elif len(cmds) > 1 and cmds[0] == 'start':
-        return jsonify(kc.start_torrent_stream())
+        return jsonify(kc.start_torrent_stream(cmds[1]))
     else:
         return jsonify(kc.error())
 
