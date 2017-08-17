@@ -1,6 +1,7 @@
 import requests
 import time
 from classes.FFMPEG import FFMPEG
+from server.config.private YT_CHANNEL
 
 
 # Function for a pre-defined test to start torrent to youtube
@@ -25,9 +26,70 @@ def kickass_test():
 
     success = FFMPEG().start_stream('http://localhost:9000', torrent_link)
     if success:
-        return 'https://gaming.youtube.com/channel/UClunXnj9ruW8ZBGUQlXSHaA'
+        return YT_CHANNEL
     else:
         return 'Failed to start the FFMPEG live stream.... :{'
+    
+    
+def start_torrent_stream(magnet_link):
+    """
+    Is the controller endpoint for the slack request to start a torrent
+    :param magnet_link: Link of a torrent
+    :return string response
+    """
+    # Options to send to the peerflix-server
+    options = {
+        "headers": {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Accept": "*/*"
+        },
+        "url": 'http://localhost:9000/torrents',
+        "body": '{"link": "{0}"}'.format(magnet_link)
+    }
+    # Send request to peerflix-server
+    torrent_hash = start_torrent(options)
+
+    # Wait for 10 seconds to allow torrent to process
+    time.sleep(10)
+
+    # Get the torrent streaming link
+    torrent_link = get_max_file(torrent_files('http://localhost:9000', torrent_hash))['link']
+
+    success = FFMPEG().start_stream('http://localhost:9000', torrent_link)
+    if success:
+        return YT_CHANNEL
+    else:
+        return 'Failed to start the FFMPEG live stream.... :{'  
+    
+    
+def error():
+    """
+    Function to handle a large error
+    :return: error message
+    """
+    return 'There was some kinda error. Server may have died'
+   
+
+def stop_torrent_stream():
+    """
+    Is the controller endpoint for the slack request to stop torrents
+    :return string response
+    """
+    # Options to send to the peerflix-server
+    options = {
+        "headers": {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Accept": "*/*"
+        },
+        "url": 'http://localhost:9000/torrents'
+    }
+
+    success = FFMPEG().stop_stream()
+    stop_torrents(options)
+    if success:
+        return 'Stopped the YT live stream and torrents!'
+    else:
+        return 'Failed to stop the FFMPEG live stream.... :{'  
 
 
 def start_torrent(options):
@@ -38,6 +100,18 @@ def start_torrent(options):
     """
     response = requests.post(options['url'], headers=options['headers'], data=options['body'])
     return response.json()['infoHash']
+
+
+def stop_torrents(options):
+    """
+    Stops all torrents on the peerflix-server
+    :param options: contains url for server and headers
+    :return: a hash for the torrent process
+    """
+    torrent_hashes = requests.get(options['url'], headers=options['headers']).json()
+    for t in torrent_hashes:
+        requests.delete(options['url'] + '/{0}'.format(t['infoHash']), headers=options['headers'])
+    return True
 
 
 def torrent_files(server_url, torrent_hash):
