@@ -1,4 +1,6 @@
 Flask:
+* Requirements.txt
+* Better installation guide
 * Need basic splash page
 * Need error handling
 * Add comments you....bad person
