@@ -1,6 +1,4 @@
 Flask:
-* Need Slack and Slack auth
-* Need support to delete a torrent / cancel stream from API
 * Need basic splash page
 * Need error handling
 * Add comments you....bad person
