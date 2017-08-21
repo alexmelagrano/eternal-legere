@@ -1,3 +1,4 @@
+import json
 import requests
 import time
 from classes.FFMPEG import FFMPEG
@@ -45,7 +46,7 @@ def start_torrent_stream(magnet_link):
             "Accept": "*/*"
         },
         "url": '{0}/torrents'.format(PEERFLIX_SERVER),
-        "body": '{"link": "{0}"}'.format(magnet_link)
+        "body": json.dumps({"link": magnet_link})
     }
     # Send request to peerflix-server
     torrent_hash = start_torrent(options)
