@@ -107,7 +107,7 @@ def stop_torrents(options):
     """
     Stops all torrents on the peerflix-server
     :param options: contains url for server and headers
-    :return: a hash for the torrent process
+    :return: a boolean if successful 
     """
     torrent_hashes = requests.get(options['url'], headers=options['headers']).json()
     for t in torrent_hashes:
