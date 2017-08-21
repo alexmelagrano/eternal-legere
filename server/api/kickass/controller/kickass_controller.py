@@ -86,7 +86,7 @@ def stop_torrent_stream():
         "url": '{0}/torrents'.format(PEERFLIX_SERVER)
     }
 
-    success = FFMPEG().stop_stream()
+    success = FFMPEG().stop_streaming()
     stop_torrents(options)
     if success:
         return 'Stopped the YT live stream and torrents!'
