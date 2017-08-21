@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from ..controller import kickass_controller as kc
-from server.auth import auth_service
+from server.auth.auth_service import requires_slack_auth
 
 kickass_api = Blueprint('kickass_api', __name__)
 
