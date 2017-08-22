@@ -1,7 +1,7 @@
 import json
-from threading import Thread
 import requests
 import time
+from threading import Thread
 from classes.FFMPEG import FFMPEG
 from server.config.private import YT_CHANNEL
 from server.config.private import PEERFLIX_SERVER
@@ -68,7 +68,7 @@ def start_torrent_stream(magnet_link, delayed=None):
     else:
         resp = "Failed to start the FFMPEG live stream.... :{"
     if delayed:
-        requests.post(delayed, data={"text": resp}, headers={'Content-Type': 'application/json'})
+        requests.post(delayed, data=json.dumps({"text": resp}), headers={'Content-Type': 'application/json'})
     else:
         return resp
     
