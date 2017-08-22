@@ -21,7 +21,7 @@ def authenticate():
 def requires_slack_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        auth = request.get_json().get('token', '')
+        auth = request.form.get('token', '')
         if not auth or not check_auth(auth):
             return authenticate()
         return f(*args, **kwargs)
