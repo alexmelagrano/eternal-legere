@@ -50,10 +50,10 @@ class FFMPEG:
         Stops subprocess if it is open
         :return: Boolean
         """
-        with self.lock:
-            if not self.is_streaming():
-                return True
-            else:
+        if not self.is_streaming():
+            return True
+        else:
+            with self.lock:
                 self.live_stream.terminate()
                 self.live_stream = None
                 return True
