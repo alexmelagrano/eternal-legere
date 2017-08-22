@@ -80,7 +80,7 @@ def start_torrent_stream_delayed_response(magnet_link, response_url):
     :param response_url: Url to post to for delayed response
     :return String please wait for further response
     """
-    t = Thread(start_torrent_stream, args=(magnet_link, response_url,))
+    t = Thread(target=start_torrent_stream, args=(magnet_link, response_url,))
     t.start()
     return 'Process started. Please wait to hear from us in approx. 30 seconds!'
 
