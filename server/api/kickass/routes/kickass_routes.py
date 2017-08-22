@@ -25,10 +25,12 @@ def stop_torrent_stream():
 @requires_slack_auth
 def slack_hook():
     cmds = request.form.get('text', '').split(' ')
+    response_url = request.form.get('response_url', '')
     if len(cmds) > 0 and cmds[0] == 'stop':
         return jsonify(kc.stop_torrent_stream())
     elif len(cmds) > 1 and cmds[0] == 'start':
-        return jsonify(kc.start_torrent_stream(cmds[1]))
+        kc.start_torrent_stream_and_respond(cmds[1], response_url)
+        return jsonify("Attempting to start live stream. Please wait for follow-up response.")
     else:
         return jsonify(kc.error())
 
