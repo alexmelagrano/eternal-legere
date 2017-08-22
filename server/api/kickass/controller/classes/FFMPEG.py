@@ -26,7 +26,7 @@ class FFMPEG:
                         '-preset', 'superfast',
                         '-c:a', 'aac', '-b:a', '160k', '-ac', '2', '-ar', '44100', '-f', 'flv', '-strict', '-2',
                         'rtmp://a.rtmp.youtube.com/live2/{0}'.format(YT_LIVESTREAM_KEY)]
-            self.live_stream = subprocess.Popen(commands, stdout=subprocess.PIPE)
+            FFMPEG.live_stream = subprocess.Popen(commands, stdout=subprocess.PIPE)
             return True
 
     def is_streaming(self):
@@ -39,7 +39,7 @@ class FFMPEG:
                 if self.live_stream.poll() is None:
                     return True
                 else:
-                    self.live_stream = None
+                    FFMPEG.live_stream = None
                     return False
             except AttributeError:
                 # None type won't have poll()
@@ -55,5 +55,5 @@ class FFMPEG:
         else:
             with self.lock:
                 self.live_stream.terminate()
-                self.live_stream = None
+                FFMPEG.live_stream = None
                 return True
