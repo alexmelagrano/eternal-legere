@@ -48,6 +48,9 @@ def start_torrent_stream(magnet_link):
         "url": '{0}/torrents'.format(PEERFLIX_SERVER),
         "body": json.dumps({"link": magnet_link})
     }
+    # Doesn't continue if a stream is already in progress
+    if FFMPEG().is_streaming():
+        return 'A stream is already in process. Check it out @ {0}'.format(YT_CHANNEL)
     # Send request to peerflix-server
     torrent_hash = start_torrent(options)
 
