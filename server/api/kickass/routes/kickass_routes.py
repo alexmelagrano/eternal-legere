@@ -24,7 +24,7 @@ def stop_torrent_stream():
 @kickass_api.route('/api/slack_hook', methods=['POST'])
 @requires_slack_auth
 def slack_hook():
-    cmds = request.get_json().get('text', '').split(' ')
+    cmds = request.form.get('text', '').split(' ')
     if len(cmds) > 0 and cmds[0] == 'stop':
         return jsonify(kc.stop_torrent_stream())
     elif len(cmds) > 1 and cmds[0] == 'start':
