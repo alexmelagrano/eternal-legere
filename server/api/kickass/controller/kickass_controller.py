@@ -1,4 +1,5 @@
 import json
+from threading import Thread
 import requests
 import time
 from classes.FFMPEG import FFMPEG
@@ -33,10 +34,11 @@ def kickass_test():
         return 'Failed to start the FFMPEG live stream.... :{'
     
     
-def start_torrent_stream(magnet_link):
+def start_torrent_stream(magnet_link, delayed=None):
     """
     Is the controller endpoint for the slack request to start a torrent
     :param magnet_link: Link of a torrent
+    :param delayed: response_url to send message to if delayed
     :return string response
     """
     # Options to send to the peerflix-server
@@ -62,10 +64,26 @@ def start_torrent_stream(magnet_link):
 
     success = FFMPEG().start_stream(PEERFLIX_SERVER, torrent_link)
     if success:
-        return YT_CHANNEL
+        resp = YT_CHANNEL
     else:
-        return 'Failed to start the FFMPEG live stream.... :{'  
+        resp = "Failed to start the FFMPEG live stream.... :{"
+    if delayed:
+        requests.post(delayed, data={"text": resp}, headers={'Content-Type': 'application/json'})
+    else:
+        return resp
     
+    
+def start_torrent_stream_delayed_response(magnet_link, response_url):
+    """
+    Will send a basic text response first followed by a detailed reponse post-process
+    :param magnet_link: link to torrent
+    :param response_url: Url to post to for delayed response
+    :return String please wait for further response
+    """
+    t = Thread(start_torrent_stream, args=(magnet_link, response_url,))
+    t.start()
+    return 'Process started. Please wait to hear from us in approx. 30 seconds!'
+
     
 def error():
     """
